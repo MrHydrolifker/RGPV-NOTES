@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Branch & Semester Selection</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body>
+  <section id="selection">
+    <h2>Select Your Branch</h2>
+    <div id="branches">
+      <button onclick="selectBranch('CSE')">CSE</button>
+      <button onclick="selectBranch('AIML')">AIML</button>
+      <button onclick="selectBranch('CSE-IoT')">CSE-IoT</button>
+      <button onclick="selectBranch('AIDS')">AIDS</button>
+      <button onclick="selectBranch('CSEDS')">CSEDS</button>
+      <button onclick="selectBranch('MECHANICAL')">MECHANICAL</button>
+      <button onclick="selectBranch('CIVIL')">CIVIL</button>
+      <button onclick="selectBranch('EC')">EC</button>
+      <button onclick="selectBranch('EX/EE')">EX/EE</button>
+    </div>
+
+    <h2>Select Your Semester</h2>
+    <div id="semesters"></div>
+
+    <h3>Subjects</h3>
+    <div id="subjects"></div>
+  </section>
+
+  <section id="chapters" style="display: none;">
+    <h2></h2>
+    <div id="chapter-list"></div>
+  </section>
+
+  <script>
+    let selectedBranch = "";
+let selectedSemester = 0;
+
+const subjectImages = {
+  "Engn. Physics": "jpgimagessubjects/shivaniii.jpg",
+  "Mathematics-1": "jpgimagessubjects/shivaniii.jpg",
+  
+  "Basic Civil Eng.": "jpgimagessubjects/shivaniii.jpg",
+  "Basic Mech.": "jpgimagessubjects/shivaniii.jpg",
+  "Basic Computer Eng.": "jpgimagessubjects/shivaniii.jpg",
+  "Engineering Chemistry": "jpgimagessubjects/shivaniii.jpg",
+  "BEEE": "jpgimagessubjects/shivaniii.jpg",
+  "English for Comm.": "jpgimagessubjects/shivaniii.jpg",
+  "EG": "jpgimagessubjects/shivaniii.jpg",
+  "M1": "jpgimagessubjects/shivaniii.jpg",
+  "M2": "jpgimagessubjects/shivaniii.jpg"
+};
+
+const subjectColors = {
+  "Engn. Physics": "#FFDDC1",
+  "M2": "#C1E1FF",
+  
+  "Basic Civil Eng.": "#FFAB91",
+  "Basic Mech.": "#F48FB1",
+  "Basic Computer Eng.": "#80CBC4",
+  "Engineering Chemistry": "#FFD700",
+  "BEEE": "#FF7043",
+  "English for Comm.": "#81C784",
+  "EG": "#7986CB",
+  "M1": "#A1887F"
+};
+
+const downloadLinks = {
+  "Engn. Physics": "https://drive.google.com/file/d/1IF-vKnfPAHS1H2cI2GY7EU2GJKJR_LHF/view",
+  "M1": "https://drive.google.com/file/d/1BVjf_fnG6hSxeA4iPfdfWdlvbfRxzDYN/view?usp=drivesdk ",
+  "Language Labs": "LINK_FOR_LANGUAGE_LABS",
+  "Basic Civil Eng.": "https://drive.google.com/file/d/1IDo-ZGnSI53E6Q7QNHQq_jE7Ae88lWaK/view",
+  "Basic Mech.": "https://drive.google.com/file/d/1ITImpnNJBfUarRmfoL_g1oECjU4gQcBX/view",
+  "Basic Computer Eng.": "https://drive.google.com/file/d/1I3mZl3ArZtwdgR25AjYAp0RKTMGvZXBN/view",
+  "Engineering Chemistry": "https://drive.google.com/file/d/1IERvs4RJZ14kPa9DlWg7FGS-AaE9BJsz/view ",
+  "BEEE": "https://drive.google.com/file/d/1IthkcYCgiCJ0IGbVIBUm7RlXZA-zlAm5/view",
+  "English for Comm.": "https://drive.google.com/file/d/1Ctqi0wr5sZPmznfNpAngiRdc5y95Y4uT/view?usp=drivesdk ",
+  "EG": "https://drive.google.com/file/d/1IsUU21A0Ri44fCjzHyTA20k-Md8EWK-Q/view",
+  "M2": "https://drive.google.com/file/d/1SuyuN2nKPj9BEzGoZjRvQxgk9Z7BNWwu/view?usp=drivesdk "
+};
+
+function selectBranch(branch) {
+  selectedBranch = branch;
+  let semestersDiv = document.getElementById("semesters");
+  semestersDiv.innerHTML = "";
+  for (let i = 1; i <= 8; i++) {
+    let btn = document.createElement("button");
+    btn.innerText = "Semester " + i;
+    btn.onclick = function() { selectSemester(i); };
+    semestersDiv.appendChild(btn);
+  }
+}
+
+function selectSemester(semester) {
+  selectedSemester = semester;
+  let subjectsDiv = document.getElementById("subjects");
+  subjectsDiv.innerHTML = "";
+  
+  let subjects = [];
+
+  if (["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(selectedBranch) && semester == 1) {
+    subjects = ["Engn. Physics", "M1", , "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."];
+  } 
+  else if (["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(selectedBranch) && semester == 2) {
+    subjects = ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M2"];
+  }
+  else if (["CSE", "EC", "EX/EE"].includes(selectedBranch) && semester == 2) {
+    subjects = ["Engn. Physics", "M2", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."];
+  }
+  else if (["CSE", "EC", "EX/EE"].includes(selectedBranch) && semester == 1) {
+    subjects = ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M1"];
+  }
+
+  let gridContainer = document.createElement("div");
+  gridContainer.className = "subject-grid";
+  
+  subjects.forEach(subject => {
+    let card = document.createElement("div");
+    card.className = "subject-card";
+    card.style.backgroundColor = subjectColors[subject] || "#ffffff";
+    
+    let image = document.createElement("img");
+    image.src = subjectImages[subject] || "https://via.placeholder.com/300x150?text=Subject";
+    image.alt = subject;
+    image.style.width = "100%";
+    
+    let title = document.createElement("h3");
+    title.innerText = subject;
+    
+    let btn = document.createElement("button");
+    btn.innerText = "Download PDF";
+    btn.onclick = function() {
+      let downloadLink = downloadLinks[subject];
+      if (downloadLink) {
+        window.open(downloadLink, "_blank");
+      } else {
+        alert("Download link not available for this subject.");
+      }
+    };
+    
+    card.appendChild(image);
+    card.appendChild(title);
+    card.appendChild(btn);
+    gridContainer.appendChild(card);
+  });
+  
+  subjectsDiv.appendChild(gridContainer);
+}
+
+  </script>
+
+  <style>
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #2cbcff;
+    }
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .subject-card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.671);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .subject-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .chapter-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.829);
+            transition: transform 0.3s ease-in-out;
+        }
+        .chapter-card:hover {
+            transform: scale(1.05);
+        }
+        .chapter-card h3 {
+            margin-bottom: 5px;
+        }
+        .chapter-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .chapter-card button:hover {
+            background-color: #0056b3;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2cbcff;
+        }
+  </style>
+</body>
+</html>

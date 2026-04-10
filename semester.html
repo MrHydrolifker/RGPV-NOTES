@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Semester</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function getBranch() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('branch');
+        }
+        function setSemesterLinks() {
+            let branch = getBranch();
+            document.querySelectorAll('.btn').forEach(button => {
+                button.href = `subjects.html?branch=${branch}&semester=${button.textContent}`;
+            });
+        }
+        window.onload = setSemesterLinks;
+    </script>
+</head>
+<body>
+    <header>Choose Your Semester</header>
+    <section class="selection">
+        <h2>Select Semester</h2>
+        <div class="buttons">
+            <a class="btn">1</a>
+            <a class="btn">2</a>
+            <a class="btn">3</a>
+            <a class="btn">4</a>
+            <a class="btn">5</a>
+            <a class="btn">6</a>
+            <a class="btn">7</a>
+            <a class="btn">8</a>
+        </div>
+    </section>
+</body>
+</html>

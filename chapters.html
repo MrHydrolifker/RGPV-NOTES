@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Notes</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function getSubject() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('subject');
+        }
+        function loadChapters() {
+            let subject = getSubject();
+            let chapters = {
+                "Engineering Chemistry": ["Atomic Structure", "Chemical Bonding", "Thermodynamics"],
+                "BEEE": ["Circuit Theory", "DC Machines", "AC Fundamentals"],
+                "English for Comm.": ["Grammar Basics", "Essay Writing", "Comprehension"],
+                "EG": ["Orthographic Projections", "Isometric Drawing", "AutoCAD Basics"],
+                "M1": ["Limits", "Differentiation", "Integration"]
+            };
+            let chapterList = chapters[subject] || [];
+            let container = document.getElementById('chapters');
+            chapterList.forEach(chap => {
+                let div = document.createElement('div');
+                div.className = 'chapter';
+                div.innerHTML = `<span>${chap}</span> <a href="notes/${subject}_${chap}.pdf" download class="download-btn">Download</a>`;
+                container.appendChild(div);
+            });
+        }
+        window.onload = loadChapters;
+    </script>
+</head>
+<body>
+    <header>Download Notes</header>
+    <section class="selection">
+        <h2>Chapters</h2>
+        <div id="chapters"></div>
+    </section>
+</body>
+</html>

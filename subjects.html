@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Subject</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function getParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return { branch: urlParams.get('branch'), semester: urlParams.get('semester') };
+        }
+        function loadSubjects() {
+            let { branch, semester } = getParams();
+            let subjects = {
+                "CSE_1": ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M1"],
+                "EC_1": ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M1"],
+                "EX-EE_1": ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M1"],
+                "AIML_1": ["Engn. Physics", "Mathematics-1", "Language Labs", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."],
+                "CIVIL_1": ["Engn. Physics", "Mathematics-1", "Language Labs", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."],
+            };
+            let key = `${branch}_${semester}`;
+            let subjectList = subjects[key] || [];
+            let container = document.getElementById('subjects');
+            subjectList.forEach(subj => {
+                let link = document.createElement('a');
+                link.href = `chapters.html?subject=${subj}`;
+                link.className = 'btn';
+                link.innerText = subj;
+                container.appendChild(link);
+            });
+        }
+        window.onload = loadSubjects;
+    </script>
+</head>
+<body>
+    <header>Choose Your Subject</header>
+    <section class="selection">
+        <h2>Select Subject</h2>
+        <div id="subjects" class="buttons"></div>
+    </section>
+</body>
+</html>

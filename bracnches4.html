@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Branch & Semester Selection</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body>
+  <section id="selection">
+    <h2>Select Your Branch</h2>
+    <div id="branches">
+      <button onclick="selectBranch('CSE')">CSE</button>
+      <button onclick="selectBranch('AIML')">AIML</button>
+      <button onclick="selectBranch('CSE-IoT')">CSE-IoT</button>
+      <button onclick="selectBranch('AIDS')">AIDS</button>
+      <button onclick="selectBranch('CSEDS')">CSEDS</button>
+      <button onclick="selectBranch('MECHANICAL')">MECHANICAL</button>
+      <button onclick="selectBranch('CIVIL')">CIVIL</button>
+      <button onclick="selectBranch('EC')">EC</button>
+      <button onclick="selectBranch('EX/EE')">EX/EE</button>
+    </div>
+
+    <h2>Select Your Semester</h2>
+    <div id="semesters"></div>
+
+    <h3>Subjects</h3>
+    <div id="subjects"></div>
+  </section>
+
+  <section id="chapters" style="display: none;">
+    <h2>Chapters</h2>
+    <div id="chapter-list"></div>
+  </section>
+
+  <script>
+    let selectedBranch = "";
+    let selectedSemester = 0;
+
+    const subjectImages = {
+      "Engn. Physics": "https://via.placeholder.com/300x150?text=Physics",
+      "Mathematics-1": "https://via.placeholder.com/300x150?text=Mathematics",
+      "Language Labs": "https://via.placeholder.com/300x150?text=Language",
+      "Basic Civil Eng.": "https://via.placeholder.com/300x150?text=Civil+Eng",
+      "Basic Mech.": "https://via.placeholder.com/300x150?text=Mechanical",
+      "Basic Computer Eng.": "https://via.placeholder.com/300x150?text=Computer+Eng",
+      "Engineering Chemistry": "https://via.placeholder.com/300x150?text=Chemistry",
+      "BEEE": "https://via.placeholder.com/300x150?text=BEEE",
+      "English for Comm.": "https://via.placeholder.com/300x150?text=English",
+      "EG": "https://via.placeholder.com/300x150?text=EG",
+      "M1": "https://via.placeholder.com/300x150?text=M1"
+    };
+
+    const subjectColors = {
+      "Engn. Physics": "#FFDDC1",
+      "Mathematics-1": "#C1E1FF",
+      "Language Labs": "#D4E157",
+      "Basic Civil Eng.": "#FFAB91",
+      "Basic Mech.": "#F48FB1",
+      "Basic Computer Eng.": "#80CBC4",
+      "Engineering Chemistry": "#FFD700",
+      "BEEE": "#FF7043",
+      "English for Comm.": "#81C784",
+      "EG": "#7986CB",
+      "M1": "#A1887F"
+    };
+
+    function selectBranch(branch) {
+      selectedBranch = branch;
+      let semestersDiv = document.getElementById("semesters");
+      semestersDiv.innerHTML = "";
+      for (let i = 1; i <= 8; i++) {
+        let btn = document.createElement("button");
+        btn.innerText = "Semester " + i;
+        btn.onclick = function() { selectSemester(i); };
+        semestersDiv.appendChild(btn);
+      }
+    }
+
+    function selectSemester(semester) {
+      selectedSemester = semester;
+      let subjectsDiv = document.getElementById("subjects");
+      subjectsDiv.innerHTML = "";
+      
+      let subjects = [];
+      if ((["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(selectedBranch) && semester == 1) || 
+          (["CSE", "EC", "EX/EE"].includes(selectedBranch) && semester == 2)) {
+        subjects = ["Engn. Physics", "Mathematics-1", "Language Labs", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."];
+      } else if ((["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(selectedBranch) && semester == 2) || 
+                 (["CSE", "EC", "EX/EE"].includes(selectedBranch) && semester == 1)) {
+        subjects = ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M1"];
+      }
+      
+      let gridContainer = document.createElement("div");
+      gridContainer.className = "subject-grid";
+      
+      subjects.forEach(subject => {
+        let card = document.createElement("div");
+        card.className = "subject-card";
+        card.style.backgroundColor = subjectColors[subject] || "#ffffff";
+        
+        let image = document.createElement("img");
+        image.src = subjectImages[subject] || "https://via.placeholder.com/300x150?text=Subject";
+        image.alt = subject;
+        image.style.width = "100%";
+        
+        let title = document.createElement("h3");
+        title.innerText = subject;
+        
+        let btn = document.createElement("button");
+        btn.innerText = "View Chapters";
+        btn.onclick = function() { showChapters(subject); };
+        
+        card.appendChild(image);
+        card.appendChild(title);
+        card.appendChild(btn);
+        gridContainer.appendChild(card);
+      });
+      
+      subjectsDiv.appendChild(gridContainer);
+    }
+    function showChapters(subject) {
+            document.getElementById("selection").style.display = "none";
+            document.getElementById("chapters").style.display = "block";
+            let chapterList = document.getElementById("chapter-list");
+            chapterList.innerHTML = "";
+            
+            let chapters = [
+                "Introduction", "Fundamentals", "Advanced Concepts", "Case Studies", "Applications"
+            ];
+            let chapterColors = ["#FFDDC1", "#C1E1FF", "#D4E157", "#FFAB91", "#80CBC4"];
+      
+            
+            chapters.forEach((chapter, index) => {
+                let card = document.createElement("div");
+                card.className = "chapter-card";
+                card.style.backgroundColor = chapterColors[index % chapterColors.length];
+                card.innerHTML = `
+                    <h3>${chapter}</h3>
+                    <p>Contents of ${chapter}</p>
+                    <button onclick="downloadNotes('${subject}', ${index})">Download Notes</button>
+                `;
+                chapterList.appendChild(card);
+            });
+        }
+
+        function downloadNotes(subject, chapterIndex) {
+            let notesLinks = {
+                "Basic Computer Eng.": [
+                    "https://drive.google.com/file/d/1Y3RR2dsNirUQoDG-tZb0pa0GHi373-u-/view?usp=drivesdk",
+                    "https://placeholder.com/unit2.pdf",
+                    "https://placeholder.com/unit3.pdf",
+                    "https://placeholder.com/unit4.pdf",
+                    "https://placeholder.com/unit5.pdf"
+                ],
+                "Engineering Chemistry": [
+                    "https://placeholder.com/chemistry_unit1.pdf",
+                    "https://placeholder.com/chemistry_unit2.pdf",
+                    "https://placeholder.com/chemistry_unit3.pdf",
+                    "https://placeholder.com/chemistry_unit4.pdf",
+                    "https://placeholder.com/chemistry_unit5.pdf"
+                ]
+            };
+            
+            let link = notesLinks[subject] ? notesLinks[subject][chapterIndex] : "https://placeholder.com/default.pdf";
+            window.open(link, "_blank");
+        }
+  </script>
+
+  <style>
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #2cbcff;
+    }
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .subject-card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .subject-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .chapter-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+        .chapter-card:hover {
+            transform: scale(1.05);
+        }
+        .chapter-card h3 {
+            margin-bottom: 5px;
+        }
+        .chapter-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .chapter-card button:hover {
+            background-color: #0056b3;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2cbcff;
+        }
+  </style>
+</body>
+</html>
