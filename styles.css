@@ -1,37 +1,24 @@
-
-.cta-button {
-    display: inline-block;
-    margin: 10px;
-    padding: 14px 32px;
-    background: linear-gradient(90deg, #3a86ff 0%, #8338ec 100%);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(58,134,255,0.10);
-    transition: transform 0.3s, background 0.3s;
-}
-.cta-button:hover {
-    background: linear-gradient(90deg, #8338ec 0%, #3a86ff 100%);
-    transform: scale(1.08);
-    box-shadow: 0 4px 16px rgba(131,56,236,0.18);
-}
-
-/* Modern bottom navigation */
-.bottom-nav {
-    background: linear-gradient(90deg, #3a86ff 0%, #8338ec 100%);
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+/* Center all main content in hero section on all screen sizes */
+.hero {
+    background: none;
+    color: inherit;
+    text-align: center;
+    padding: 56px 0 32px 0;
+    margin-bottom: 0;
     display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    box-shadow: 0 -2px 8px rgba(58,134,255,0.08);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
-.bottom-nav a {
-    color: #fff;
-    text-decoration: none;
+.btn {
+    display: inline-block;
+    background: #162447;
+    color: #fff !important;
+    border-radius: 10px;
+    padding: 16px 32px;
+    .subject-card {
+        background: #162447 !important;
+    }
     font-size: 18px;
     padding: 10px;
     transition: color 0.3s;
@@ -41,15 +28,16 @@
 }
 body {
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    background: #f7f9fb;
     text-align: center;
     margin: 0;
     padding: 0;
 }
 
-.dark body {
-    background: #10182b !important;
-    color: #e0e6ed !important;
+body.dark {
+    background: linear-gradient(135deg, #0f1419 0%, #162447 50%, #1a2a4d 100%) !important;
+    color: #d4dce8 !important;
+    min-height: 100vh;
 }
 
 header {

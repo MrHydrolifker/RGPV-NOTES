@@ -15,6 +15,33 @@
 
     <!-- Author -->
     <meta name="author" content="Ayush Prasad">
+  <!-- Keywords -->
+ <meta name="keywords" content="
+    rgpv notes, rgpv btech notes, rgpv pyq, rgpv previous year question paper,
+    rgpv syllabus, rgpv result, rgpv admit card, rgpv exam form, rgpv time table,
+    rgpv academic calendar, rgpv important questions, rgpv question paper,
+    rgpv notes 1st year, rgpv notes 2nd year, rgpv notes 3rd year,
+    rgpv cse notes, rgpv mechanical notes, rgpv civil notes,
+    rgpv diploma result, rgpv login, rgpv student login, rgpv portal,
+    rgpv btech syllabus, rgpv btech result, rgpv pyq 1st sem,
+    rgpv question paper 2025, rgpv question paper 2024, rgpv notes pdf
+    ">
+
+    <!-- Author -->
+    <meta name="author" content="Ayush Prasad">
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow">
+
+    <!-- 🔥 Canonical (VERY IMPORTANT) -->
+    <link rel="canonical" href="https://rgpvnotes.vercel.app/">
+
+    <!-- 🔥 Open Graph (for WhatsApp sharing) -->
+    <meta property="og:title" content="RGPV Notes 2026 - Free BTech Notes & PYQs">
+    <meta property="og:description" content="Get free RGPV notes, PYQs, and study material for all branches.">
+    <meta property="og:url" content="https://rgpvnotes.vercel.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://rgpvnotes.vercel.app/logo.jpg">
 
     <!-- Robots -->
     <meta name="robots" content="index, follow">
@@ -178,31 +205,31 @@
                 color: var(--text-light);
                 transition: background 0.3s, color 0.3s;
             }
-            .dark body {
-                background: #10182b;
-                color: #072547;
+            body.dark {
+                background: linear-gradient(135deg, #0f1419 0%, #162447 50%, #1a2a4d 100%) !important;
+                color: #d4dce8 !important;
             }
-            .dark header {
+            body.dark header {
                 background: #162447;
-                color: #e0e6ed;
+                color: #d4dce8;
                 border-bottom: 1px solid #1f2a48;
             }
             .dark .card {
                 background: #1b2540;
-                color: #e0e6ed;
+                color: #d4dce8;
             }
             .dark .hero h1 {
-                color: #3a86ff;
+                color: #7cb3ff;
             }
             .dark .hero p {
-                color: #b0b8c9;
+                color: #d4dce8;
             }
             .dark .bottom-nav {
                 background: #162447;
                 box-shadow: 0 -2px 8px #10182b;
             }
             .dark .bottom-nav a {
-                color: #3a86ff;
+                color: #7cb3ff;
             }
             
             .container {
@@ -221,7 +248,7 @@
                 justify-content: space-between;
                 height: 72px;
             }
-            .dark header {
+            body.dark header {
                 background: var(--secondary);
                 color: #fff;
                 border-bottom: 1px solid #23272f;
@@ -244,24 +271,41 @@
             }
             .theme-toggle {
                 margin-right: 32px;
-                background: none;
-                color: inherit;
+                background: #e0e6ed;
                 border: none;
-                border-radius: 50%;
-                width: 38px;
-                height: 38px;
-                font-size: 20px;
+                border-radius: 20px;
+                width: 54px;
+                height: 28px;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                transition: background 0.3s, color 0.3s;
+                justify-content: flex-start;
+                padding: 2px;
+                transition: background 0.4s ease, box-shadow 0.3s;
+                position: relative;
+                box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .theme-toggle::before {
+                content: '';
+                position: absolute;
+                width: 24px;
+                height: 24px;
+                background: white;
+                border-radius: 50%;
+                transition: transform 0.4s ease;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                left: 2px;
+            }
+            .theme-toggle.dark {
+                background: #2d5be3;
+                justify-content: flex-end;
+            }
+            .theme-toggle.dark::before {
+                transform: translateX(26px);
+                background: #f7f9fb;
             }
             .theme-toggle:hover {
-                background: #f0f4fa;
-            }
-            .dark .theme-toggle:hover {
-                background: #23272f;
+                box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15), 0 0 8px rgba(45, 91, 227, 0.2);
             }
             nav ul {
                 list-style: none;
@@ -299,7 +343,13 @@
                 color: var(--primary);
             }
             .dark .hero h1 {
-                color: #6dd5ed;
+                color: #7cb3ff;
+            }
+            .dark h2 {
+                color: #7cb3ff !important;
+            }
+            .dark h2 {
+                color: #7cb3ff !important;
             }
             .hero p {
                 font-size: 1.15rem;
@@ -308,7 +358,7 @@
                 color: #111;
             }
             .dark .hero p {
-                color: #111;
+                color: #d4dce8;
             }
             .card {
                 background: var(--card-bg-light);
@@ -326,7 +376,7 @@
             }
             .dark .card {
                 background: #1b2540;
-                color: #e0e6ed;
+                color: #d4dce8;
             }
             .cta-button {
                 display: inline-block;
@@ -376,7 +426,50 @@
                 box-shadow: 0 -2px 8px #10182b;
             }
             .dark .bottom-nav a {
-                color: #3a86ff;
+                color: #7cb3ff;
+            }
+            /* Responsive subject grid and card styles (improved for mobile) */
+            .subject-grid {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 12px;
+              margin-top: 10px;
+            }
+            .subject-card {
+              border: 1px solid #ccc;
+              border-radius: 10px;
+              padding: 14px 4px;
+              text-align: center;
+              font-size: 0.98rem;
+              font-weight: 600;
+              box-shadow: 0 4px 18px 0 rgba(100, 150, 255, 0.08), 0 2px 8px 0 rgba(180, 210, 255, 0.08);
+              background: linear-gradient(120deg, #ffffff 0%, #e0ecff 30%, #b3cfff 60%, #5fa8ff 90%, #e0f7fa 100%) !important;
+              transition: transform 0.3s, box-shadow 0.3s;
+            }
+            .subject-card:hover {
+              transform: translateY(-3px) scale(1.03);
+              box-shadow: 2px 2px 10px rgba(0,0,0,0.10);
+            }
+            .dark .subject-card {
+              background: linear-gradient(120deg, #1a2a4d 0%, #1b3a5e 30%, #1a3a6d 60%, #2a4a8d 90%, #1a3a5d 100%) !important;
+              border: 1px solid #2a4a7d;
+              color: #7cb3ff;
+              text-shadow: 0 0 8px rgba(124, 179, 255, 0.3);
+            }
+            .dark .subject-card:hover {
+              transform: translateY(-3px) scale(1.03);
+              box-shadow: 2px 2px 10px rgba(124, 179, 255, 0.2);
+              background: linear-gradient(120deg, #1f3050 0%, #203a60 30%, #1f3a75 60%, #2f4f9d 90%, #1f3a65 100%) !important;
+            }
+            @media (min-width: 600px) {
+              .subject-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+              }
+              .subject-card {
+                font-size: 1.08rem;
+                padding: 18px 8px;
+              }
             }
         </style>
 </head>
@@ -391,7 +484,7 @@
                     <img src="logo.jpg" alt="Logo" style="height:72px;width:auto;object-fit:contain;border-radius:8px;vertical-align:middle;margin-right:8px;" />
                     RGPV NOTES
                 </div>
-                <button class="theme-toggle" x-on:click="$store.theme.toggle()" x-text="$store.theme.dark ? '☀️' : '🌙'" x-cloak aria-label="Toggle theme"></button>
+                <button class="theme-toggle" x-on:click="$store.theme.toggle()" x-bind:class="{'dark': $store.theme.dark}" x-cloak aria-label="Toggle theme"></button>
                 <nav>
                     <ul>
                         <li><a href="#home">Home</a></li>
@@ -419,12 +512,32 @@
                     <p>Your professional platform for RGPV academic resources, notes, and papers. Get semester-wise, branch-wise, and subject-wise notes curated for you. Switch between light and dark mode for your comfort.</p>
                     <div class="card">
                         <a href="branches2.html" class="cta-button" style="font-size:1.3rem;padding:20px 48px;display:block;margin:0 auto;">Download RGPV Notes</a>
+                        <a href="https://www.rgpvonline.com/btech-cse-question-papers.html" class="cta-button" style="font-size:1.1rem;padding:14px 32px;margin-top:18px;background:#fff;color:#2d5be3;border:2px solid #2d5be3;box-shadow:none;">Download PYQ Papers</a>
                     </div>
                 </section>
+
+            <!-- Responsive Subject Grid Section -->
+            <section style="margin: 32px 0;">
+              <h2 style="text-align:center;color:var(--primary);margin-bottom:18px;">Popular Subjects</h2>
+              <div class="subject-grid">
+                <div class="subject-card">Mathematics-1</div>
+                <div class="subject-card">Engineering Physics</div>
+                <div class="subject-card">Engineering Chemistry</div>
+                <div class="subject-card">Basic Civil Eng.</div>
+                <div class="subject-card">Basic Mech.</div>
+                <div class="subject-card">Basic Computer Eng.</div>
+                <div class="subject-card">BEEE</div>
+                <div class="subject-card">Language Labs</div>
+              </div>
+            </section>
             </main>
 
         <!-- Professional Footer -->
         <footer class="footer-bar">
+                    <!-- Disclaimer Message -->
+                    <div style="max-width:900px;margin:32px auto 12px auto;padding:16px 18px 12px 18px;background:#fffbe7;border:1px solid #ffe082;border-radius:10px;color:#7a5a00;font-size:1rem;text-align:center;box-shadow:0 2px 8px rgba(255,200,40,0.08);">
+                        <strong>Disclaimer:</strong> This is not an RGPV official site. We do not take any liability for the correctness of material we provide or host. All the content hosted or provided by us is owned by respected institutes. For any legal or business queries please contact us on <a href="mailto:rgpvonlinenotes@gmail.com" style="color:#2d5be3;text-decoration:underline;">rgpvonlinenotes@gmail.com</a> with your official email. Any messages sent by contact form regarding business or legal inquiry will not be taken seriously.
+                    </div>
             <div class="footer-links">
                 <a href="#contact">Contact</a>
                 <a href="#privacy">Privacy Policy</a>
