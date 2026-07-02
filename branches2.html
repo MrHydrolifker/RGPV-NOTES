@@ -10,6 +10,7 @@
 </head>
 <body>
   <section id="selection">
+    <p><a href="admin.html">Open Admin Upload Page</a></p>
     <h2>Select Your Branch</h2>
     <div id="branches">
       <button onclick="selectBranch('CSE')">CSE</button>
@@ -35,7 +36,23 @@
     <div id="chapter-list"></div>
   </section>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAmyNXPsvnKjFK48aZiTmFo87dKfFa7NGY",
+      authDomain: "lnctspace.firebaseapp.com",
+      projectId: "lnctspace",
+      storageBucket: "lnctspace.firebasestorage.app",
+      messagingSenderId: "483768016804",
+      appId: "1:483768016804:web:5ed9d1f3ca117180e0ab31",
+      measurementId: "G-312WHQYZVB"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     let selectedBranch = "";
     let selectedSemester = 0;
 
@@ -51,7 +68,12 @@
       "English for Comm.": "jpgimagessubjects/englishforcommn.jpg",
       "EG": "jpgimagessubjects/enggrphic.jpg",
       "M1": "jpgimagessubjects/maths.jpg",
-      "M2":"jpgimagessubjects/m2.jpg"
+      "M2":"jpgimagessubjects/m2.jpg",
+       "ADA": "jpgimagessubjects/ADA.jpg",
+      "COA": "jpgimagessubjects/coa.png",
+      "Machine Learning": "jpgimagessubjects/ml.webp",
+      "SOFTWARE ENGINEERING": "jpgimagessubjects/se.png",
+      "Discrete Mathematics": "jpgimagessubjects/discrete.jpg"
     };
 
     const subjectColors = {
@@ -65,7 +87,12 @@
       "BEEE": "#FF7043",
       "English for Comm.": "#81C784",
       "EG": "#7986CB",
-      "M1": "#A1887F"
+      "M1": "#A1887F",
+      "ADA": "#B39DDB",
+      "COA": "#90CAF9",
+      "Machine Learning": "#80DEEA",
+      "SOFTWARE ENGINEERING": "#FFCC80",
+      "Discrete Mathematics": "#C5E1A5"
     };
 
     function selectBranch(branch) {
@@ -87,18 +114,21 @@
       
       let subjects = [];
 
-if (["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(selectedBranch) && semester == 1) {
-  subjects = ["Engn. Physics", "M1", "Language Labs", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."];
-} 
-else if (["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(selectedBranch) && semester == 2) {
-  subjects = ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M2"];
-}
-else if (["CSE", "EC", "EX/EE"].includes(selectedBranch) && semester == 2) {
-  subjects = ["Engn. Physics", "M2", "Language Labs", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."];
-}
-else if (["CSE", "EC", "EX/EE"].includes(selectedBranch) && semester == 1) {
-  subjects = ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M1"];
-}
+      if (selectedBranch === "AIML" && semester === 4) {
+        subjects = ["ADA", "COA", "Machine Learning", "SOFTWARE ENGINEERING", "Discrete Mathematics"];
+      }
+      else if (["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(selectedBranch) && semester == 1) {
+        subjects = ["Engn. Physics", "M1", "Language Labs", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."];
+      } 
+      else if (["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(selectedBranch) && semester == 2) {
+        subjects = ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M2"];
+      }
+      else if (["CSE", "EC", "EX/EE"].includes(selectedBranch) && semester == 2) {
+        subjects = ["Engn. Physics", "M2", "Language Labs", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."];
+      }
+      else if (["CSE", "EC", "EX/EE"].includes(selectedBranch) && semester == 1) {
+        subjects = ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M1"];
+      }
 
       let gridContainer = document.createElement("div");
       gridContainer.className = "subject-grid";
@@ -140,54 +170,82 @@ const subjectChapters = {
     "English for Comm.": ["Grammar Basics", "Business Communication", "Report Writing", "Presentation Skills", "Interviews & Resumes"],
     "EG": ["Orthographic Projections", "Isometric Views", "Perspective Drawings", "CAD Basics", "Engineering Standards"],
     "M1": ["Limits & Continuity", "Derivatives", "Integration", "Matrices", "Complex Numbers"],
-    "M2": ["Differential Equations", "Laplace Transforms", "Fourier Series", "Numerical Methods", "Vector Calculus"]
+    "M2": ["Differential Equations", "Laplace Transforms", "Fourier Series", "Numerical Methods", "Vector Calculus"],
+    "ADA": ["Algorithm Analysis", "Greedy Algorithm", "Dynamic Programming", "Backtracking", "Advanced Tree and Graph"],
+    "SOFTWARE ENGINEERING": ["The Software Product and Software Process", "Requirement Elicitation, Analysis, and Specification", "Software Design", "Software Analysis and Testing", "Software Maintenance & Software Project Measurement"],
+    "Discrete Mathematics": ["Set Theory-Relation and Functions", "Algebraic Structure", "Propositional Logic", "Matrices", "Test of Hypothesis"],
+    "Machine Learning": ["INTRO ML", "Neural Networks", "Supervised Learning Techniques", "Unsupervised Learning Techniques", "ML Design and Analysis"],
+    "COA": ["Basic Structure of Computer", "Computer Arithmetic", "I/O Organization: I/O Interface", "Memory Organization", "Multiprocessors"]
 };
 
-function showChapters(subject) {
+async function showChapters(subject) {
     document.getElementById("selection").style.display = "none";
     document.getElementById("chapters").style.display = "block";
     let chapterList = document.getElementById("chapter-list");
-    chapterList.innerHTML = "";
+    chapterList.innerHTML = "<p>Loading notes...</p>";
 
-    // Get the chapters for the selected subject or use a default list
     let chapters = subjectChapters[subject] || ["Introduction", "Fundamentals", "Advanced Concepts", "Case Studies", "Applications"];
     let chapterColors = ["#FFDDC1", "#C1E1FF", "#D4E157", "#FFAB91", "#80CBC4"];
+    let uploadedNotes = await loadNotesForSubject(subject);
 
+    chapterList.innerHTML = "";
     chapters.forEach((chapter, index) => {
         let card = document.createElement("div");
         card.className = "chapter-card";
         card.style.backgroundColor = chapterColors[index % chapterColors.length];
+        const note = uploadedNotes[chapter] || null;
         card.innerHTML = `
             <h3>${chapter}</h3>
             <p>Contents of ${chapter}</p>
-            <button onclick="downloadNotes('${subject}', ${index})">Download Notes</button>
+            ${note ? `<p><a href="${note.url}" target="_blank" rel="noopener">Open Uploaded PDF</a></p>` : `<p>No PDF uploaded yet.</p>`}
+            <button onclick="downloadNotes('${subject}', '${chapter}')">Download Notes</button>
         `;
         chapterList.appendChild(card);
     });
 }
 
-        function downloadNotes(subject, chapterIndex) {
-            let notesLinks = {
-                "Basic Computer Eng.": [
-                    "https://drive.google.com/file/d/1Y3RR2dsNirUQoDG-tZb0pa0GHi373-u-/view?usp=drivesdk",
-                    "https://drive.google.com/file/d/1qyMf5ODz8CQ6fmeGh7EZ3VVT22EHJT8F/view?usp=drivesdk",
-                    "https://drive.google.com/file/d/1qzXGiZSqQ3xTXeFRbv-1PmMAwzYhQXqL/view?usp=drivesdk ",
-                    "https://drive.google.com/file/d/1rEobZHsAKikVijAuVHhaIPc39JdP_SzE/view?usp=drivesdk",
-                    "https://drive.google.com/file/d/1rQimMtRNyfmxGZ493cz0Dq311qTKHfFH/view?usp=drivesdk"
-                ],
+async function loadNotesForSubject(subject) {
+    const notesMap = {};
+    try {
+        const q = query(
+            collection(db, "notes"),
+            where("branch", "==", selectedBranch),
+            where("semester", "==", selectedSemester),
+            where("subject", "==", subject)
+        );
+        const snapshot = await getDocs(q);
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            notesMap[data.chapterName] = { url: data.fileUrl, fileName: data.fileName };
+        });
+    } catch (error) {
+        console.error("Failed to load notes from Firebase", error);
+    }
+    return notesMap;
+}
 
-                "Engineering Chemistry": [
-                    "https://drive.google.com/file/d/1rXIuZs80fXBAB0OgeqfDqE4gBAW1DLsh/view?usp=drivesdk",
-                    "https://drive.google.com/file/d/1rZa8m0di7QFHJkd3QTfsuGoLCV0Hl1vc/view?usp=drivesdk",
-                    "https://drive.google.com/file/d/15geiYLzma0fMtk1-p6Un_crNs3uWnqMn/view?usp=drivesdk",
-                    "https://drive.google.com/file/d/15fltxZd-iUdeeyRsfj4K6NJiQJCazSJa/view?usp=drivesdk",
-                    "https://drive.google.com/file/d/15T_hmJjPWFi64meG8rT16YbvAOb1oLUr/view?usp=drivesdk",
-                    "https://drive.google.com/file/d/15wUi2YOV8-oMEOdFRmBW5GNkX-Dcfl7Q/view?usp=drivesdk"
-                ]
-            };
-            
-            let link = notesLinks[subject] ? notesLinks[subject][chapterIndex] : "https://placeholder.com/default.pdf";
-            window.open(link, "_blank");
+        async function downloadNotes(subject, chapterName) {
+            try {
+                const q = query(
+                    collection(db, "notes"),
+                    where("branch", "==", selectedBranch),
+                    where("semester", "==", selectedSemester),
+                    where("subject", "==", subject),
+                    where("chapterName", "==", chapterName)
+                );
+                const snapshot = await getDocs(q);
+                if (!snapshot.empty) {
+                    const note = snapshot.docs[0].data();
+                    if (note.fileUrl) {
+                        window.open(note.fileUrl, "_blank");
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to load uploaded note", error);
+            }
+
+            window.open("https://placeholder.com/default.pdf", "_blank");
         }
   </script>
 

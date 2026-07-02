@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Firebase Upload</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 30px; background-color: #f4f7f6; }
+    .admin-container { max-width: 500px; margin: auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h2 { color: #333; margin-top: 0; }
+    label { font-weight: bold; display: block; margin: 15px 0 5px; }
+    select, input, button { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    button { background-color: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; font-weight: bold; }
+    button:hover { background-color: #0056b3; }
+    .status { color: green; font-weight: bold; text-align: center; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="admin-container">
+  <h2>Admin Dashboard (Firebase)</h2>
+  
+  <label for="branch">Select Branch:</label>
+  <select id="branch" onchange="updateSubjects()"></select>
+
+  <label for="semester">Select Semester:</label>
+  <select id="semester" onchange="updateSubjects()">
+    <option value="1">Semester 1</option>
+    <option value="2">Semester 2</option>
+    <option value="4">Semester 4</option>
+  </select>
+
+  <label for="subject">Select Subject:</label>
+  <select id="subject"></select>
+
+  <label for="unit">Select Unit/Chapter:</label>
+  <select id="unit">
+    <option value="0">Unit 1 / Chapter 1</option>
+    <option value="1">Unit 2 / Chapter 2</option>
+    <option value="2">Unit 3 / Chapter 3</option>
+    <option value="3">Unit 4 / Chapter 4</option>
+    <option value="4">Unit 5 / Chapter 5</option>
+  </select>
+
+  <label for="driveLink">Google Drive Link:</label>
+  <input type="text" id="driveLink" placeholder="https://drive.google.com/file/d/...">
+
+  <button id="saveBtn">Save Link to Cloud</button>
+  <div id="status" class="status"></div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAmyNXPsvnKjFK48aZiTmFo87dKfFa7NGY",
+    authDomain: "lnctspace.firebaseapp.com",
+    projectId: "lnctspace",
+    storageBucket: "lnctspace.firebasestorage.app",
+    messagingSenderId: "483768016804",
+    appId: "1:483768016804:web:5ed9d1f3ca117180e0ab31",
+    measurementId: "G-312WHQYZVB"
+  };
+
+  // Initialize Firebase & Firestore
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const branches = ["CSE", "AIML", "CSE-IoT", "AIDS", "CSEDS", "MECHANICAL", "CIVIL", "EC", "EX/EE"];
+  const branchSelect = document.getElementById("branch");
+
+  branches.forEach(b => {
+    let opt = document.createElement("option");
+    opt.value = b;
+    opt.innerText = b;
+    branchSelect.appendChild(opt);
+  });
+
+  window.updateSubjects = function() {
+    const branch = branchSelect.value;
+    const sem = parseInt(document.getElementById("semester").value);
+    const subjectSelect = document.getElementById("subject");
+    subjectSelect.innerHTML = "";
+
+    let subjects = [];
+    if (branch === "AIML" && sem === 4) {
+      subjects = ["ADA", "COA", "Machine Learning", "SOFTWARE ENGINEERING", "Discrete Mathematics"];
+    } else if (["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(branch) && sem === 1) {
+      subjects = ["Engn. Physics", "M1", "Language Labs", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."];
+    } else if (["AIML", "AIDS", "MECHANICAL", "CIVIL", "CSE-IoT", "CSEDS"].includes(branch) && sem === 2) {
+      subjects = ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M2"];
+    } else if (["CSE", "EC", "EX/EE"].includes(branch) && sem === 2) {
+      subjects = ["Engn. Physics", "M2", "Language Labs", "Basic Civil Eng.", "Basic Mech.", "Basic Computer Eng."];
+    } else if (["CSE", "EC", "EX/EE"].includes(branch) && sem === 1) {
+      subjects = ["Engineering Chemistry", "BEEE", "English for Comm.", "EG", "M1"];
+    }
+
+    subjects.forEach(sub => {
+      let opt = document.createElement("option");
+      opt.value = sub;
+      opt.innerText = sub;
+      subjectSelect.appendChild(opt);
+    });
+  }
+
+  async function saveNotesLink() {
+    const subject = document.getElementById("subject").value;
+    const unitIndex = document.getElementById("unit").value;
+    const link = document.getElementById("driveLink").value.trim();
+
+    if (!subject || !link) {
+      alert("Please check subject selections and link values!");
+      return;
+    }
+
+    const statusDiv = document.getElementById("status");
+    statusDiv.innerText = "Saving to Firebase...";
+
+    try {
+      // Saves dynamically directly mapped via Subject Name into an array index map configuration
+      // merge: true keeps other units intact when modifying just one!
+      await setDoc(doc(db, "notes", subject), {
+        [unitIndex]: link
+      }, { merge: true });
+
+      statusDiv.innerText = `Success! Unit ${parseInt(unitIndex) + 1} updated for ${subject}.`;
+      document.getElementById("driveLink").value = "";
+    } catch (error) {
+      console.error("Firebase Error:", error);
+      statusDiv.innerText = "Error saving link. Check rules/permissions.";
+    }
+  }
+
+  document.getElementById("saveBtn").addEventListener("click", saveNotesLink);
+  updateSubjects();
+</script>
+</body>
+</html>
